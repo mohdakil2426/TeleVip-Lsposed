@@ -1,5 +1,7 @@
 package com.my.televip.virtuals.messenger;
 
+import android.content.SharedPreferences;
+
 import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.obfuscate.AutomationResolver;
@@ -28,9 +30,10 @@ public class MessagesController {
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getInputChannel", AutomationResolver.ResolverType.Method), peer.inputPeer);
     }
 
-    public void hidePromoDialog() {
-        XposedHelpers.callMethod(messagesController, AutomationResolver.resolve("MessagesController", "hidePromoDialog", AutomationResolver.ResolverType.Method));
+    public static SharedPreferences getGlobalMainSettings() {
+        return (SharedPreferences) XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getGlobalMainSettings", AutomationResolver.ResolverType.Method));
     }
+
 
     public static Object getInputChannel(long id) {
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getInputChannel", AutomationResolver.ResolverType.Method), id);

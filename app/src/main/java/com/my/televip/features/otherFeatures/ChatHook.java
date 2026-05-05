@@ -26,7 +26,7 @@ public class ChatHook {
     private static boolean initialized = false;
 
     public static void init(Context context, String className) {
-        if (initialized || className == null) return;
+        if (initialized || className == null || ClientChecker.check(ClientChecker.ClientType.Nagram)) return;
 
         Class<?> clazz = ClassLoad.getClass(className);
         if (clazz == null) FeatureStateManager.reset(context);

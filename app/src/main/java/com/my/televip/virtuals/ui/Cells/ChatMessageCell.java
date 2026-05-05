@@ -69,8 +69,6 @@ public class ChatMessageCell {
                             }
                         }
                     }));
-                } else {
-                    Logger.w("Not found ChatMessageCell, " + Utils.issue);
                 }
             }
         } catch (Throwable t){

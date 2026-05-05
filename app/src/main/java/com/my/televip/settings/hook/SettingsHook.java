@@ -17,7 +17,7 @@ import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.settings.controller.SettingsController;
 import com.my.televip.logging.Logger;
 import com.my.televip.virtuals.Adapters.DrawerLayoutAdapter;
-import com.my.televip.virtuals.EventType;
+import com.my.televip.virtuals.SettingsIconResolver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -130,7 +130,7 @@ public class SettingsHook {
                                 itemConstructor.setAccessible(true);
                             }
 
-                            Object newItem = itemConstructor.newInstance(8353847, Translator.get(Keys.GhostMode), EventType.getIconSettings());
+                            Object newItem = itemConstructor.newInstance(8353847, Translator.get(Keys.GhostMode), SettingsIconResolver.getIconSettings());
 
                             if (items instanceof ArrayList<?>) {
                                 ArrayList<Object> typedItems = (ArrayList<Object>) items;

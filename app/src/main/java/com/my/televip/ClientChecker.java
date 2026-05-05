@@ -1,11 +1,9 @@
 package com.my.televip;
 
-import java.util.Arrays;
-
 public class ClientChecker {
     public static boolean check(ClientType client, String pkgName)
     {
-        return Arrays.asList(client.getPackageNames()).contains(pkgName);
+        return client.getPackageName().equals(pkgName);
     }
 
     public static boolean check(ClientType client)
@@ -31,22 +29,20 @@ public class ClientChecker {
         Telega("ru.dahl.messenger", com.my.televip.Clients.Telega.class),
         Momogram("nekox.messenger.broken", com.my.televip.Clients.Momogram.class);
 
-        private final String[] packageNames;
+        private final String packageName;
         private final Class<?> resolverClass;
 
         ClientType(String packageName, Class<?> resolverClass) {
-            this.packageNames = new String[]{packageName};
+            this.packageName = packageName;
             this.resolverClass = resolverClass;
         }
 
-        public String[] getPackageNames() { return packageNames; }
+        public String getPackageName() { return packageName; }
         public Class<?> getResolverClass() { return resolverClass; }
 
         public static ClientType fromPackage(String pkg){
-            for (ClientType type: ClientType.values()){
-                for (String name: type.getPackageNames()){
-                    if (name.equals(pkg)) return type;
-                }
+            for (ClientType type: ClientType.values()) {
+                if (type.getPackageName().equals(pkg)) return type;
             }
             return null;
         }

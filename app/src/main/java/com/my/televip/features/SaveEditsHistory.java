@@ -17,7 +17,7 @@ import com.my.televip.Class.ClassLoad;
 import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.logging.Logger;
 import com.my.televip.virtuals.ActionBar.AlertDialog;
-import com.my.televip.virtuals.EventType;
+import com.my.televip.virtuals.SettingsIconResolver;
 import com.my.televip.virtuals.SQLite.SQLiteCursor;
 import com.my.televip.virtuals.SQLite.SQLiteDatabase;
 import com.my.televip.virtuals.Theme;
@@ -93,7 +93,7 @@ public class SaveEditsHistory {
                                                         items.add(Translator.get(Keys.EditsHistory));
                                                         options.add(8353847);
                                                         if (!ClientChecker.check(ClientChecker.ClientType.Nagram))
-                                                            icons.add(EventType.getIconSettings());
+                                                            icons.add(SettingsIconResolver.getIconSettings());
                                                     }
                                                 }
                                             }

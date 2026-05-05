@@ -58,6 +58,11 @@ public class GhostMode {
                                         param.setResult(null);
                                         return;
                                     }
+                                    if (ConfigManager.hideProxySponsor.isEnable() && HideProxySponsor.isPromoDataRequest(object)) {
+                                        param.setResult(null);
+                                        return;
+                                    }
+
                                     HideSeen.handleReadAfterSend(object);
                                 }
                             } catch (Throwable e) {

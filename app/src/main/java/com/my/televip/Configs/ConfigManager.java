@@ -195,7 +195,7 @@ public class ConfigManager {
         disableProfileSwipeBack = new ConfigItem(ConfigItem.SWITCH, Keys.DisableProfileSwipeBack, ConfigPreferences.getBoolean(Keys.DisableProfileSwipeBack), DisableProfileSwipeBack::init);
         configs.add(disableProfileSwipeBack);
 
-        hideProxySponsor = new ConfigItem(ConfigItem.SWITCH, Keys.HideProxySponsor, Translator.get(Keys.RestartRequired), ConfigPreferences.getBoolean(Keys.HideProxySponsor), HideProxySponsor::init);
+        hideProxySponsor = new ConfigItem(ConfigItem.SWITCH, Keys.HideProxySponsor, Translator.get(Keys.RestartRequired), ConfigPreferences.getBoolean(Keys.HideProxySponsor), GhostMode::init);
         configs.add(hideProxySponsor);
 
         configs.add(shadows);
@@ -231,6 +231,9 @@ public class ConfigManager {
 
         configs.add(shadows);
 
+        if (hideProxySponsor.isEnable()) HideProxySponsor.removePromoDialog();
+
+        if ((showDeletedMessages.isEnable() || showMessageId.isEnable()) && !ChatMessageCell.isEnable) ChatMessageCell.init();
     }
 
     public static List<ConfigItem> getItems(Context context) {
@@ -270,7 +273,8 @@ public class ConfigManager {
                 hideStoryView.isEnable() ||
                 hideTyping.isEnable() ||
                 hideOnline.isEnable() ||
-                markReadAfterSend.isEnable();
+                markReadAfterSend.isEnable() ||
+                hideProxySponsor.isEnable();
 
     }
 
