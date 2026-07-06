@@ -82,8 +82,6 @@ public class HijriDate {
                                 if (formatDate != null && !formatDate.isEmpty()) {
                                     param.setResult(formatDate);
                                 }
-
-
                             }
                         }));
                 HMethod.hookMethod(

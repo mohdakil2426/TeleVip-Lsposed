@@ -33,8 +33,9 @@ public class AutomationResolver {
         if (type == ResolverType.Field && resolverRegistry.hasField(className, name)) {
             return resolverRegistry.resolveField(className, name);
         }
-        if (type == ResolverType.Method && resolverRegistry.hasMethod(className, name)) {
-            return resolverRegistry.resolveMethod(className, name);
+        String nameMethod = resolverRegistry.resolveMethodName(className, name);
+        if (type == ResolverType.Method && resolverRegistry.hasMethod(className, nameMethod)) {
+            return resolverRegistry.resolveMethod(className, nameMethod);
         }
 
         name = name.replace("storyEntitiesAllowed2", "storyEntitiesAllowed");

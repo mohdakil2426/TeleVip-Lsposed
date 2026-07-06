@@ -25,7 +25,6 @@ public class SettingsAdapter {
         }
     }
 
-
         public static class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public Context MContext;
@@ -71,7 +70,6 @@ public class SettingsAdapter {
             }
         }
     }
-
 
     static class TextCheckCellHolder extends RecyclerView.ViewHolder {
 

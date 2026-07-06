@@ -127,88 +127,88 @@ public class ConfigManager {
 
         shadows = new ConfigItem(ConfigItem.DIVIDER);
         items.add(shadows);
-        if (!ClientChecker.check(ClientChecker.ClientType.Telegraph)) {
 
-            // Stories
-            stories = new ConfigItem(ConfigItem.HEADER, Keys.StoriesSettings);
-            items.add(stories);
+        // Stories
+        stories = new ConfigItem(ConfigItem.HEADER, Keys.StoriesSettings);
+        items.add(stories);
 
-            disableStories = new ConfigItem(ConfigItem.SWITCH, Keys.DisableStories, true, ConfigPreferences.getBoolean(Keys.DisableStories), DisableStories::init);
-            items.add(disableStories);
+        disableStories = new ConfigItem(ConfigItem.SWITCH, Keys.DisableStories, true, ConfigPreferences.getBoolean(Keys.DisableStories), DisableStories::init);
+        items.add(disableStories);
 
-            items.add(shadows);
+        items.add(shadows);
 
-            // Messages
-            messages = new ConfigItem(ConfigItem.HEADER, Keys.MessagesSettings);
-            items.add(messages);
+        // Messages
+        messages = new ConfigItem(ConfigItem.HEADER, Keys.MessagesSettings);
+        items.add(messages);
 
-            showDeletedMessages = new ConfigItem(ConfigItem.SWITCH, Keys.ShowDeletedMessages, ConfigPreferences.getBoolean(Keys.ShowDeletedMessages), ShowDeletedMessages::initProcessing);
-            items.add(showDeletedMessages);
+        showDeletedMessages = new ConfigItem(ConfigItem.SWITCH, Keys.ShowDeletedMessages, ConfigPreferences.getBoolean(Keys.ShowDeletedMessages), ShowDeletedMessages::initProcessing);
+        items.add(showDeletedMessages);
 
-            if (!ClientChecker.check(ClientChecker.ClientType.NagramX)) {
-                showMessageId = new ConfigItem(ConfigItem.SWITCH, Keys.ShowMessageID, ConfigPreferences.getBoolean(Keys.ShowMessageID), ChatMessageCell::init);
-                items.add(showMessageId);
-            }
+        if (!ClientChecker.check(ClientChecker.ClientType.NagramX)) {
+            showMessageId = new ConfigItem(ConfigItem.SWITCH, Keys.ShowMessageID, ConfigPreferences.getBoolean(Keys.ShowMessageID), ChatMessageCell::init);
+            items.add(showMessageId);
+        }
 
-            saveEditsHistory = new ConfigItem(ConfigItem.SWITCH, Keys.SaveEditsHistory, ConfigPreferences.getBoolean(Keys.SaveEditsHistory), () -> SaveEditsHistory.init(context));
-            items.add(saveEditsHistory);
+        saveEditsHistory = new ConfigItem(ConfigItem.SWITCH, Keys.SaveEditsHistory, ConfigPreferences.getBoolean(Keys.SaveEditsHistory), () -> SaveEditsHistory.init(context));
+        items.add(saveEditsHistory);
 
-            items.add(shadows);
+        items.add(shadows);
 
-            // Connections
-            connections = new ConfigItem(ConfigItem.HEADER, Keys.ConnectionsSettings);
-            items.add(connections);
+        // Connections
+        connections = new ConfigItem(ConfigItem.HEADER, Keys.ConnectionsSettings);
+        items.add(connections);
 
-            downloadSpeed = new ConfigItem(ConfigItem.SWITCH, Keys.DownloadSpeed, ConfigPreferences.getBoolean(Keys.DownloadSpeed), DownloadSpeed::init);
-            items.add(downloadSpeed);
+        downloadSpeed = new ConfigItem(ConfigItem.SWITCH, Keys.DownloadSpeed, ConfigPreferences.getBoolean(Keys.DownloadSpeed), DownloadSpeed::init);
+        items.add(downloadSpeed);
 
-            items.add(shadows);
+        items.add(shadows);
 
-            // Media
-            media = new ConfigItem(ConfigItem.HEADER, Keys.MediaSettings);
-            items.add(media);
+        // Media
+        media = new ConfigItem(ConfigItem.HEADER, Keys.MediaSettings);
+        items.add(media);
 
+        if (!ClientChecker.check(ClientChecker.ClientType.Nekogram) && !ClientChecker.check(ClientChecker.ClientType.Cherrygram)) {
             secretMediaSave = new ConfigItem(ConfigItem.SWITCH, Keys.SecretMediaSave, ConfigPreferences.getBoolean(Keys.SecretMediaSave), SecretMediaSave::init);
             items.add(secretMediaSave);
-
-            preventMedia = new ConfigItem(ConfigItem.SWITCH, Keys.PreventMedia, ConfigPreferences.getBoolean(Keys.PreventMedia), PreventMedia::init);
-            items.add(preventMedia);
-
-            enableSavingStories = new ConfigItem(ConfigItem.SWITCH, Keys.EnableSavingStories, ConfigPreferences.getBoolean(Keys.EnableSavingStories), EnableSavingStories::init);
-            items.add(enableSavingStories);
-
-            items.add(shadows);
         }
 
-            // UI
-            ui = new ConfigItem(ConfigItem.HEADER, Keys.UiSettings);
-            items.add(ui);
-        if (!ClientChecker.check(ClientChecker.ClientType.Telegraph)) {
+        preventMedia = new ConfigItem(ConfigItem.SWITCH, Keys.PreventMedia, ConfigPreferences.getBoolean(Keys.PreventMedia), PreventMedia::init);
+        items.add(preventMedia);
 
-            hidePinnedMessages = new ConfigItem(ConfigItem.SWITCH, Keys.HidePinnedMessages, ConfigPreferences.getBoolean(Keys.HidePinnedMessages), HidePinnedMessages::init);
-            items.add(hidePinnedMessages);
+        enableSavingStories = new ConfigItem(ConfigItem.SWITCH, Keys.EnableSavingStories, ConfigPreferences.getBoolean(Keys.EnableSavingStories), EnableSavingStories::init);
+        items.add(enableSavingStories);
 
-            disableChannelSwipeBack = new ConfigItem(ConfigItem.SWITCH, Keys.DisableChannelSwipeBack, ConfigPreferences.getBoolean(Keys.DisableChannelSwipeBack), DisableChannelSwipeBack::init);
-            items.add(disableChannelSwipeBack);
+        items.add(shadows);
 
-            disableProfileSwipeBack = new ConfigItem(ConfigItem.SWITCH, Keys.DisableProfileSwipeBack, ConfigPreferences.getBoolean(Keys.DisableProfileSwipeBack), DisableProfileSwipeBack::init);
-            items.add(disableProfileSwipeBack);
+        // UI
+        ui = new ConfigItem(ConfigItem.HEADER, Keys.UiSettings);
+        items.add(ui);
 
-            hideProxySponsor = new ConfigItem(ConfigItem.SWITCH, Keys.HideProxySponsor, true, ConfigPreferences.getBoolean(Keys.HideProxySponsor), HideProxySponsor::init);
-            items.add(hideProxySponsor);
+        hidePinnedMessages = new ConfigItem(ConfigItem.SWITCH, Keys.HidePinnedMessages, ConfigPreferences.getBoolean(Keys.HidePinnedMessages), HidePinnedMessages::init);
+        items.add(hidePinnedMessages);
 
+        disableChannelSwipeBack = new ConfigItem(ConfigItem.SWITCH, Keys.DisableChannelSwipeBack, ConfigPreferences.getBoolean(Keys.DisableChannelSwipeBack), DisableChannelSwipeBack::init);
+        items.add(disableChannelSwipeBack);
+
+        disableProfileSwipeBack = new ConfigItem(ConfigItem.SWITCH, Keys.DisableProfileSwipeBack, ConfigPreferences.getBoolean(Keys.DisableProfileSwipeBack), DisableProfileSwipeBack::init);
+        items.add(disableProfileSwipeBack);
+
+        hideProxySponsor = new ConfigItem(ConfigItem.SWITCH, Keys.HideProxySponsor, true, ConfigPreferences.getBoolean(Keys.HideProxySponsor), HideProxySponsor::init);
+        items.add(hideProxySponsor);
+
+        if (!ClientChecker.check(ClientChecker.ClientType.Telegraph) && !ClientChecker.check(ClientChecker.ClientType.Nekogram) && !ClientChecker.check(ClientChecker.ClientType.Cherrygram)) {
             customCalendar = new ConfigItem(ConfigItem.TEXT, Keys.Calendar, true, HijriDate::init);
             items.add(customCalendar);
-
-            items.add(shadows);
-
-            // Other Features
-            otherFeatures = new ConfigItem(ConfigItem.HEADER, Keys.OtherFeaturesSettings);
-            items.add(otherFeatures);
-
-            removesContentSaving = new ConfigItem(ConfigItem.SWITCH, Keys.RemovesContentSaving, ConfigPreferences.getBoolean(Keys.RemovesContentSaving), RemovesContentSaving::init);
-            items.add(removesContentSaving);
         }
+
+        items.add(shadows);
+
+        // Other Features
+        otherFeatures = new ConfigItem(ConfigItem.HEADER, Keys.OtherFeaturesSettings);
+        items.add(otherFeatures);
+
+        removesContentSaving = new ConfigItem(ConfigItem.SWITCH, Keys.RemovesContentSaving, ConfigPreferences.getBoolean(Keys.RemovesContentSaving), RemovesContentSaving::init);
+        items.add(removesContentSaving);
 
         telegramPremium = new ConfigItem(ConfigItem.SWITCH, Keys.TelegramPremium, ConfigPreferences.getBoolean(Keys.TelegramPremium), TelePremium::init);
         items.add(telegramPremium);
@@ -233,6 +233,7 @@ public class ConfigManager {
         items.add(btnRestartApp);
 
         items.add(shadows);
+
     }
 
     public static List<ConfigItem> getItems() {
@@ -247,14 +248,14 @@ public class ConfigManager {
                 if (item.isEnable()) item.run();
             }
 
-            if (!ClientChecker.check(ClientChecker.ClientType.Telegraph)) {
+            if (!ClientChecker.check(ClientChecker.ClientType.Telegraph) && !ClientChecker.check(ClientChecker.ClientType.Nekogram) && !ClientChecker.check(ClientChecker.ClientType.Cherrygram)) {
                 FeatureInitializer.init(context);
                 CopyNameHook.init(context);
-                AlwaysSaveMedia.init();
                 if (!ClientChecker.check(ClientChecker.ClientType.Nagram) && !ClientChecker.check(ClientChecker.ClientType.NagramX)) EditOnlineTextView.init(context);
-            } else {
-                Telegraph.removeAd();
             }
+            AlwaysSaveMedia.init();
+
+            if (ClientChecker.check(ClientChecker.ClientType.Telegraph)) Telegraph.removeAd();
 
         } catch (Throwable e) {
             Logger.e(e);

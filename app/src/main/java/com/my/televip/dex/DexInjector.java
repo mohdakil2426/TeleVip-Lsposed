@@ -1,5 +1,6 @@
 package com.my.televip.dex;
 
+import com.my.televip.ClientChecker;
 import com.my.televip.logging.Logger;
 
 import java.nio.ByteBuffer;
@@ -11,6 +12,7 @@ public class DexInjector {
     public static ClassLoader classLoader;
 
     public static void injectDex(ClassLoader classLoader) {
+        if (ClientChecker.check(ClientChecker.ClientType.Nekogram) || ClientChecker.check(ClientChecker.ClientType.Cherrygram)) return;
         try {
             byte[] dexBytes = DexHolder.DEX_BYTES;
 

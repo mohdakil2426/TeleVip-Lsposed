@@ -83,4 +83,16 @@ public class Keys {
     public static final String TodayAt = "TodayAt";
     public static final String YesterdayAt = "YesterdayAt";
     public static final String QuranNotification = "QuranNotification";
+    public static final String GregorianMonthJanuary = "GregorianMonthJanuary";
+    public static final String GregorianMonthFebruary = "GregorianMonthFebruary";
+    public static final String GregorianMonthMarch = "GregorianMonthMarch";
+    public static final String GregorianMonthApril = "GregorianMonthApril";
+    public static final String GregorianMonthMay = "GregorianMonthMay";
+    public static final String GregorianMonthJune = "GregorianMonthJune";
+    public static final String GregorianMonthJuly = "GregorianMonthJuly";
+    public static final String GregorianMonthAugust = "GregorianMonthAugust";
+    public static final String GregorianMonthSeptember = "GregorianMonthSeptember";
+    public static final String GregorianMonthOctober = "GregorianMonthOctober";
+    public static final String GregorianMonthNovember = "GregorianMonthNovember";
+    public static final String GregorianMonthDecember = "GregorianMonthDecember";
 }

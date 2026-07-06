@@ -30,10 +30,7 @@ public class ClassNames {
     public static final String QUICK_ACK_DELEGATE = "org.telegram.tgnet.QuickAckDelegate";
     public static final String WRITE_TO_SOCKET_DELEGATE = "org.telegram.tgnet.WriteToSocketDelegate";
     public static final String TL_HELP_APP_UPDATE = "org.telegram.tgnet.TLRPC$TL_help_appUpdate";
-    public static final String TL_UPDATE_DELETE_MESSAGES = "org.telegram.tgnet.TLRPC$TL_updateDeleteMessages";
-    public static final String TL_UPDATE_DELETE_CHANNEL_MESSAGES = "org.telegram.tgnet.TLRPC$TL_updateDeleteChannelMessages";
     public static final String CHAT_MESSAGE_CELL = "org.telegram.ui.Cells.ChatMessageCell";
-    public static final String DOWNLOAD_CONTROLLER = "org.telegram.messenger.DownloadController";
     public static final String TL_MESSAGE = "org.telegram.tgnet.TLRPC$Message";
     public static final String SECRET_MEDIA_VIEWER = "org.telegram.ui.SecretMediaViewer";
     public static final String PHOTO_VIEWER = "org.telegram.ui.PhotoViewer";
@@ -62,5 +59,21 @@ public class ClassNames {
     public static final String UITEM = "org.telegram.ui.Components.UItem";
     public static final String SETTINGS_ACTIVITY_SETTING_CELL = "org.telegram.ui.SettingsActivity$SettingCell";
     public static final String UNIVERSAL_ADAPTER = "org.telegram.ui.Components.UniversalAdapter";
-
+    public static final String NATIVE_BYTE_BUFFER = "org.telegram.tgnet.NativeByteBuffer";
+    public static final String TL_MESSAGES_READ_ENCRYPTED_HISTORY = "org.telegram.tgnet.TLRPC$TL_messages_readEncryptedHistory";
+    public static final String TL_MESSAGES_READ_DISCUSSION = "org.telegram.tgnet.TLRPC$TL_messages_readDiscussion";
+    public static final String TL_MESSAGES_READ_MESSAGE_CONTENTS = "org.telegram.tgnet.TLRPC$TL_messages_readMessageContents";
+    public static final String TL_CHANNELS_READ_MESSAGE_CONTENTS = "org.telegram.tgnet.TLRPC$TL_channels_readMessageContents";
+    public static final String TL_UPDATE_DELETE_MESSAGES = "org.telegram.tgnet.tl.TL_update$TL_updateDeleteMessages";
+    public static final String TL_UPDATE_DELETE_CHANNEL_MESSAGES = "org.telegram.tgnet.tl.TL_update$TL_updateDeleteChannelMessages";
+    public static final String TL_INPUT_PEER_CHANNEL = "org.telegram.tgnet.TLRPC$TL_inputPeerChannel";
+    public static final String TL_MESSAGES_SEND_MESSAGE = "org.telegram.tgnet.TLRPC$TL_messages_sendMessage";
+    public static final String TL_MESSAGES_SEND_MEDIA = "org.telegram.tgnet.TLRPC$TL_messages_sendMedia";
+    public static final String TL_MESSAGES_SEND_REACTION = "org.telegram.tgnet.TLRPC$TL_messages_sendReaction";
+    public static final String TL_MESSAGES_SEND_PAID_REACTION = "org.telegram.tgnet.TLRPC$TL_messages_sendPaidReaction";
+    public static final String TL_MESSAGES_SEND_MULTI_MEDIA = "org.telegram.tgnet.TLRPC$TL_messages_sendMultiMedia";
+    public static final String TL_MESSAGES_SET_TYPING = "org.telegram.tgnet.TLRPC$TL_messages_setTyping";
+    public static final String TL_MESSAGES_SET_ENCRYPTED_TYPING = "org.telegram.tgnet.TLRPC$TL_messages_setEncryptedTyping";
+    public static final String TL_STORIES_READ_STORIES = "org.telegram.tgnet.tl.TL_stories$TL_stories_readStories";
+    public static final String TL_STORIES_INCREMENT_STORY_VIEWS = "org.telegram.tgnet.tl.TL_stories$TL_stories_incrementStoryViews";
 }

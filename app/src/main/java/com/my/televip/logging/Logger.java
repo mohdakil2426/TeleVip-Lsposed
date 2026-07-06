@@ -5,7 +5,6 @@ import static com.my.televip.utils.Utils.pkgName;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Log;
 
 import com.my.televip.application.ApplicationLoaderHook;
 import com.my.televip.obfuscate.struct.ResolverRegistry;
@@ -21,7 +20,7 @@ public class Logger {
 
     public static void l(String text)
     {
-        Log.i("TeleVip","[TeleVip] pkgName: "+ pkgName +" " + text);
+        XposedBridge.log("[TeleVip] pkgName: "+ pkgName +" " + text);
     }
 
     public static void e(Throwable throwable) {

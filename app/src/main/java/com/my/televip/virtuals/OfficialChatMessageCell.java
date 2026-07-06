@@ -20,11 +20,6 @@ public class OfficialChatMessageCell extends ChatMessageCellDefault {
         try
         {
             XposedHelpers.setObjectField(this.instance, AutomationResolver.resolve("ChatMessageCell", "currentTimeString", AutomationResolver.ResolverType.Field), currentTimeString);
-            /*Field currentTimeStringField = FieldUtils.getFieldOfClass(this.instance, "currentTimeString");
-            if (currentTimeStringField != null)
-                currentTimeStringField.set(this.instance, currentTimeString);
-            else
-                throw new NullPointerException("Not found currentTimeString in " + this.instance.getClass().getName());*/
         }
         catch (Throwable e)
         {

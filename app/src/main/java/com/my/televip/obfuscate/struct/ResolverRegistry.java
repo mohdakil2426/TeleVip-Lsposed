@@ -33,6 +33,14 @@ public class ResolverRegistry {
         } catch (Throwable ignored) {}
     }
 
+    public String resolveMethodName(String className, String name) {
+        try {
+            return (String) clazz.getMethod("resolveMethodName", String.class, String.class).invoke(null, className, name);
+        } catch (Throwable e){
+            return name;
+        }
+    }
+
     public boolean hasClass(String className){
         try {
             return (boolean)finalClass.getMethod("has", String.class).invoke(null, className);

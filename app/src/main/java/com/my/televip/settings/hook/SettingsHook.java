@@ -4,18 +4,18 @@ package com.my.televip.settings.hook;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
 import com.my.televip.ClientChecker;
 import com.my.televip.Drawable.GhostDrawable;
-import com.my.televip.utils.Utils;
 import com.my.televip.base.AbstractMethodHook;
 import com.my.televip.hooks.HMethod;
 import com.my.televip.language.Keys;
 import com.my.televip.language.Translator;
-import com.my.televip.Class.ClassLoad;
+import com.my.televip.logging.Logger;
 import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.settings.controller.SettingsController;
-import com.my.televip.logging.Logger;
+import com.my.televip.utils.Utils;
 import com.my.televip.virtuals.Adapters.DrawerLayoutAdapter;
 import com.my.televip.virtuals.SettingsIconResolver;
 import com.my.televip.virtuals.ui.Components.UItem;
@@ -30,7 +30,6 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class SettingsHook {
 
-    public int id_item_add = -1;
     private Constructor<?> itemConstructor;
 
     public void newSettings(Class<?> SettingsActivityClass, Class<?> SettingsActivity$SettingCell$FactoryClass, SettingsController settingsController){
@@ -59,24 +58,19 @@ public class SettingsHook {
                                 int color1 = 0xFFF46F6F;
                                 int color2 = 0xFFDF5555;
 
-                                Object uItem = XposedHelpers.callStaticMethod(SettingsActivity$SettingCell$FactoryClass, AutomationResolver.resolve("SettingCell$Factory", "of", AutomationResolver.ResolverType.Method), 8353847,
+                                Object uItem = XposedHelpers.callStaticMethod(SettingsActivity$SettingCell$FactoryClass, AutomationResolver.resolve("SettingsActivity$SettingCell$Factory", "of", AutomationResolver.ResolverType.Method), 8353847,
                                         color1,
                                         color2,
                                         8353847,
                                         Translator.get(Keys.GhostMode),
                                         Translator.get(Keys.ByMustafa));
-                                if (id_item_add == -1) {
-                                    for (int i = 0; i < arrayList.size(); i++) {
-                                        UItem item = new UItem(arrayList.get(i));
-                                        int id = item.getID();
-                                        if (id > 0) {
-                                            arrayList.add(i, uItem);
-                                            id_item_add = i;
-                                            break;
-                                        }
+                                for (int i = 0; i < arrayList.size(); i++) {
+                                    UItem item = new UItem(arrayList.get(i));
+
+                                    if (item.getText() != null && item.getSubtext() != null) {
+                                        arrayList.add(i, uItem);
+                                        break;
                                     }
-                                } else {
-                                    arrayList.add(id_item_add, uItem);
                                 }
 
                             }
@@ -128,11 +122,7 @@ public class SettingsHook {
 
                             if (items instanceof ArrayList<?>) {
                                 ArrayList<Object> typedItems = (ArrayList<Object>) items;
-                                if (!ClientChecker.check(ClientChecker.ClientType.Telegraph)) {
-                                    typedItems.add(newItem);
-                                } else {
-                                    typedItems.add(0, newItem);
-                                }
+                                typedItems.add(newItem);
                             }
                         }
                     }
@@ -153,7 +143,11 @@ public class SettingsHook {
 
                             Object drawerLayoutContainer = XposedHelpers.getObjectField(Launch, AutomationResolver.resolve("LaunchActivity", "drawerLayoutContainer", AutomationResolver.ResolverType.Field));
                             if (drawerLayoutContainer != null) {
-                                XposedHelpers.callMethod(drawerLayoutContainer, AutomationResolver.resolve("DrawerLayoutContainer", "closeDrawer", AutomationResolver.ResolverType.Method));
+                                if (!ClientChecker.check(ClientChecker.ClientType.ForkgramClassic)) {
+                                    XposedHelpers.callMethod(drawerLayoutContainer, AutomationResolver.resolve("DrawerLayoutContainer", "closeDrawer", AutomationResolver.ResolverType.Method));
+                                } else {
+                                    XposedHelpers.callMethod(drawerLayoutContainer, AutomationResolver.resolve("DrawerLayoutContainer", "closeDrawer", AutomationResolver.ResolverType.Method), true);
+                                }
                             }
 
                             settingsController.openView();

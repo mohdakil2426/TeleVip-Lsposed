@@ -16,11 +16,5 @@ public class LongSparseArray {
 
     public ArrayList<Object> get(long id){
         return (ArrayList<Object>) XposedHelpers.callMethod(longSparseArray, AutomationResolver.resolve("LongSparseArray", "get", AutomationResolver.ResolverType.Method), id);
-
     }
-    public int size(){
-        return (int) XposedHelpers.callMethod(longSparseArray, AutomationResolver.resolve("LongSparseArray", "size", AutomationResolver.ResolverType.Method));
-
-    }
-
 }

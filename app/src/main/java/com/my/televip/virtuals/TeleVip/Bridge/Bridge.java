@@ -5,14 +5,15 @@ import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
+import com.my.televip.ClientChecker;
 import com.my.televip.base.AbstractMethodHook;
 import com.my.televip.dex.DexInjector;
-import com.my.televip.Class.ClassLoad;
 import com.my.televip.hooks.HMethod;
-import com.my.televip.settings.ui.SettingsAdapter;
-import com.my.televip.settings.controller.SettingsController;
 import com.my.televip.logging.Logger;
+import com.my.televip.settings.controller.SettingsController;
+import com.my.televip.settings.ui.SettingsAdapter;
 import com.my.televip.virtuals.Theme;
 import com.my.televip.virtuals.ui.Cells.HeaderCell;
 import com.my.televip.virtuals.ui.Cells.ShadowSectionCell;
@@ -25,11 +26,14 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class Bridge {
 
+    public static final TypedValue outValue = new TypedValue();
+
     public static Object getLayoutManager(Context context){
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.SETTINGS_ADAPTER, DexInjector.classLoader), "getLayoutManager", context);
     }
 
     public static void init(SettingsController settingsController){
+        if (DexInjector.classLoader == null) return;
         try {
             Class<?> bridgeClass = XposedHelpers.findClassIfExists("com.televip.SettingsAdapter.Bridge", DexInjector.classLoader);
             Class<?> textCheckCellClass = XposedHelpers.findClassIfExists("com.televip.SettingsAdapter.SettingsAdapter$TextCheckCellHolder", DexInjector.classLoader);
@@ -66,23 +70,16 @@ public class Bridge {
                 }
             });
 
-
-            TypedValue outValue = new TypedValue();
             settingsController.getContext().getTheme().resolveAttribute(
                     android.R.attr.selectableItemBackground,
                     outValue,
                     true
             );
-            
+
             XposedHelpers.findAndHookConstructor(textCheckCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextCheckCell textCheckCell = new TextCheckCell(settingsController.getContext());
-                    textCheckCell.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
-
-                    textCheckCell.getView().setBackgroundResource(outValue.resourceId);
-                    textCheckCell.getView().setClickable(true);
-                    textCheckCell.getView().setFocusable(true);
+                    TextCheckCell textCheckCell = createTextCheckCell(settingsController.getContext());
                     param.args[0] = textCheckCell.getView();
                     param.args[1] = textCheckCell.textCell;
                 }
@@ -91,11 +88,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(textSettingsCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextSettingsCell textSettingsCell = new TextSettingsCell(settingsController.getContext());
-                    textSettingsCell.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
-                    textSettingsCell.getView().setBackgroundResource(outValue.resourceId);
-                    textSettingsCell.getView().setClickable(true);
-                    textSettingsCell.getView().setFocusable(true);
+                    TextSettingsCell textSettingsCell = createTextSettingsCell(settingsController.getContext());
                     param.args[0] = textSettingsCell.getView();
                     param.args[1] = textSettingsCell.textSettingsCell;
                 }
@@ -104,8 +97,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(headerCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    HeaderCell header = new HeaderCell(settingsController.getContext());
-                    header.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
+                    HeaderCell header = createHeaderCell(settingsController.getContext());
                     param.args[0] = header.getView();
                     param.args[1] = header.headerCell;
                 }
@@ -121,8 +113,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(textInfoCellClass, View.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextInfoCell textInfoCell = new TextInfoCell(settingsController.getContext());
-                    textInfoCell.setBackgroundColor(Theme.getBackgroundGrayColor());
+                    TextInfoCell textInfoCell = createTextInfoCell(settingsController.getContext());
                     param.args[0] = textInfoCell;
                 }
             });
@@ -131,4 +122,41 @@ public class Bridge {
             Logger.e(e);
         }
     }
+
+    public static TextCheckCell createTextCheckCell(Context context) {
+
+        TextCheckCell textCheckCell = new TextCheckCell(context);
+
+        textCheckCell.getView().setBackgroundColor(
+                Theme.getBackgroundWhiteOrBlueColor()
+        );
+
+        textCheckCell.getView().setBackgroundResource(outValue.resourceId);
+        textCheckCell.getView().setClickable(true);
+        textCheckCell.getView().setFocusable(true);
+
+        return textCheckCell;
+    }
+
+    public static TextSettingsCell createTextSettingsCell(Context context) {
+        TextSettingsCell textSettingsCell = new TextSettingsCell(context);
+        textSettingsCell.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
+        textSettingsCell.getView().setBackgroundResource(outValue.resourceId);
+        textSettingsCell.getView().setClickable(true);
+        textSettingsCell.getView().setFocusable(true);
+
+        return textSettingsCell;
+    }
+    public static HeaderCell createHeaderCell(Context context) {
+        HeaderCell header = new HeaderCell(context);
+        header.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
+        return header;
+    }
+
+    public static TextInfoCell createTextInfoCell(Context context) {
+        TextInfoCell textInfoCell = new TextInfoCell(context);
+        textInfoCell.setBackgroundColor(Theme.getBackgroundGrayColor());
+        return textInfoCell;
+    }
+
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
 import com.my.televip.Drawable.ArrowDrawable;
@@ -16,6 +18,7 @@ import com.my.televip.language.Keys;
 import com.my.televip.language.Translator;
 import com.my.televip.logging.Logger;
 import com.my.televip.obfuscate.AutomationResolver;
+import com.my.televip.settings.adapter.ListAdapter;
 import com.my.televip.settings.controller.SettingsController;
 import com.my.televip.ui.toolBar.MainToolBar;
 import com.my.televip.virtuals.TeleVip.Bridge.Bridge;
@@ -54,17 +57,21 @@ public class SettingsActivity {
             layout.addView(toolbar);
 
             listView = new RecyclerListView(context);
+            if (DexInjector.classLoader != null) {
+                Object adapter = XposedHelpers.newInstance(
+                        ClassLoad.getClass(ClassNames.SETTINGS_ADAPTER_LIST_ADAPTER, DexInjector.classLoader),
+                        context);
 
-            Object adapter = XposedHelpers.newInstance(
-                    ClassLoad.getClass(ClassNames.SETTINGS_ADAPTER_LIST_ADAPTER, DexInjector.classLoader),
-                    context);
-
-            listView.setAdapter(adapter);
+                listView.setAdapter(adapter);
+                listView.setLayoutManager(Bridge.getLayoutManager(context));
+            } else {
+                listView.setAdapter(new ListAdapter(context, settingsController));
+                listView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            }
 
             listView.setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
 
             listView.setVerticalScrollBarEnabled(false);
-            listView.setLayoutManager(Bridge.getLayoutManager(context));
 
             LinearLayout.LayoutParams recyclerParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -101,7 +108,7 @@ public class SettingsActivity {
                 }
             });
 
-            HMethod.hookMethod(ClassLoad.getClass(ClassNames.ANDROID_UTILITIES), AutomationResolver.resolve("AndroidUtilities", "isTablet", AutomationResolver.ResolverType.Method), new AbstractMethodHook() {
+            HMethod.hookMethod(ClassLoad.getClass(ClassNames.ANDROID_UTILITIES), AutomationResolver.resolve("AndroidUtilities", "isTabletInternal", AutomationResolver.ResolverType.Method), new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(MethodHookParam param) {
                     if (isSettings) {

@@ -59,12 +59,19 @@ public class ConverterCalendar {
     }
 
     public static CalendarDate toCalendar(long date) {
+        if (ConfigManager.customCalendar == null){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(date);
+            return new CalendarDate(calendar);
+        }
         if (ConfigManager.customCalendar.getCustomCalendar() == 1) {
             return new CalendarDate(toHijri(date));
         } else if (ConfigManager.customCalendar.getCustomCalendar() == 2) {
             return new CalendarDate(toJalali(date));
         }
-        return null;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        return new CalendarDate(calendar);
     }
 
     public static CalendarDate toCalendar(Date date) {
@@ -77,36 +84,37 @@ public class ConverterCalendar {
     }
 
     public static CalendarDate toCalendar(Calendar calendar) {
+        if (ConfigManager.customCalendar == null){
+            return new CalendarDate(calendar);
+        }
         if (ConfigManager.customCalendar.getCustomCalendar() == 1) {
             return new CalendarDate(toHijri(calendar));
         } else if (ConfigManager.customCalendar.getCustomCalendar() == 2) {
             return new CalendarDate(toJalali(calendar));
         }
-        return null;
+        return new CalendarDate(calendar);
     }
 
     public static String formatDate(long date) {
         try {
-
             Calendar now = Calendar.getInstance();
-
+            now.setTimeInMillis(System.currentTimeMillis());
             CalendarDate rightNow = ConverterCalendar.toCalendar(now);
-            if (rightNow == null) return null;
 
             int day = rightNow.getDay();
             int year = rightNow.getYear();
+
 
             SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
             String dateHour = sdf.format(new Date(date));
 
             rightNow = ConverterCalendar.toCalendar(date);
 
-            if (rightNow == null) return null;
-
             int dateDay = rightNow.getDay();
             int dateYear = rightNow.getYear();
             int dateMonth = rightNow.getMonth();
             String dateMonthName = rightNow.getMonthName();
+
 
             if (dateDay == day && year == dateYear) {
                 return Translator.get(Keys.TodayAt) + dateHour;

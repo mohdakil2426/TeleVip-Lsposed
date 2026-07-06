@@ -7,6 +7,7 @@ import com.my.televip.Configs.ConfigManager;
 import com.my.televip.application.AndroidUtilities;
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.logging.Logger;
+import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.virtuals.SQLite.SQLiteCursor;
 import com.my.televip.virtuals.messenger.MessagesController;
 import com.my.televip.virtuals.messenger.MessagesStorage;
@@ -45,20 +46,31 @@ public class HideSeen {
     }
 
     public static boolean isTLMessagesReadHistoryRequest(Object object) {
-        return object.getClass().getName().contains("TL_messages_readHistory");
+        if (object.getClass().getName().contains("TL_messages_readHistory")) return true;
+        return object.getClass().getName().equals(AutomationResolver.resolve(ClassNames.TL_MESSAGES_READ_HISTORY));
     }
 
     public static boolean isTLChannelsReadHistoryRequest(Object object) {
-        return object.getClass().getName().contains("TL_channels_readHistory");
+        if (object.getClass().getName().contains("TL_channels_readHistory")) return true;
+        return object.getClass().getName().equals(AutomationResolver.resolve(ClassNames.TL_CHANNELS_READ_HISTORY));
     }
 
     public static boolean isReadMessageRequest(Object object) {
-        return object.getClass().getName().contains("TL_messages_readHistory") ||
-                object.getClass().getName().contains("TL_messages_readEncryptedHistory") ||
-                object.getClass().getName().contains("TL_messages_readDiscussion") ||
-                object.getClass().getName().contains("TL_messages_readMessageContents") ||
-                object.getClass().getName().contains("TL_channels_readMessageContents") ||
-                object.getClass().getName().contains("TL_channels_readHistory");
+        String className = object.getClass().getName();
+        Class<?> objectClass = object.getClass();
+        if (className.contains("TL_messages_readHistory") ||
+                className.contains("TL_messages_readEncryptedHistory") ||
+                className.contains("TL_messages_readDiscussion") ||
+                className.contains("TL_messages_readMessageContents") ||
+                className.contains("TL_channels_readMessageContents") ||
+                className.contains("TL_channels_readHistory")) return true;
+
+        return objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_READ_HISTORY))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_READ_ENCRYPTED_HISTORY))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_READ_DISCUSSION))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_READ_MESSAGE_CONTENTS))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_CHANNELS_READ_MESSAGE_CONTENTS))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_CHANNELS_READ_HISTORY)));
     }
 
     public static void saveReadHistory(Object object) {
@@ -112,7 +124,7 @@ public class HideSeen {
         try {
             Object req;
 
-            if (peer.inputPeer.getClass().getName().contains("TL_inputPeerChannel")) {
+            if (peer.inputPeer.getClass().getName().contains("TL_inputPeerChannel") || peer.inputPeer.getClass().getName().equals(AutomationResolver.resolve(ClassNames.TL_INPUT_PEER_CHANNEL))) {
                 TLRPC.TL_channels_readHistory request;
                 if (!ClientChecker.check(ClientChecker.ClientType.Nagram)) {
                     request = new TLRPC.TL_channels_readHistory();
@@ -155,18 +167,36 @@ public class HideSeen {
     }
 
     private static TLRPC.InputPeer extractPeerFromSendObject(Object object) {
-        if (object.getClass().getName().contains("TL_messages_sendMessage") ||
-                object.getClass().getName().contains("TL_messages_sendMedia") ||
-                object.getClass().getName().contains("TL_messages_sendReaction") ||
-                object.getClass().getName().contains("TL_messages_sendPaidReaction") ||
-                object.getClass().getName().contains("TL_messages_sendMultiMedia")) {
+        String className = object.getClass().getName();
+        Class<?> objectClass = object.getClass();
+
+        if (className.contains("TL_messages_sendMessage") ||
+                className.contains("TL_messages_sendMedia") ||
+                className.contains("TL_messages_sendReaction") ||
+                className.contains("TL_messages_sendPaidReaction") ||
+                className.contains("TL_messages_sendMultiMedia")) {
+            return new TLRPC.InputPeer(getPeer(object));
+        }
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MESSAGE))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MEDIA))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_REACTION))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_PAID_REACTION))) ||
+                objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MULTI_MEDIA)))) {
             return new TLRPC.InputPeer(getPeer(object));
         }
         return null;
     }
 
     private static Object getPeer(Object msg) {
-        return XposedHelpers.getObjectField(msg, "peer");
+        Class<?> objectClass = msg.getClass();
+        String msgName = null;
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MESSAGE)))) msgName = "TLRPC$TL_messages_sendMessage";
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MEDIA)))) msgName = "TLRPC$TL_messages_sendMedia";
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_REACTION)))) msgName = "TLRPC$TL_messages_sendReaction";
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_PAID_REACTION)))) msgName = "TLRPC$TL_messages_sendPaidReaction";
+        if (objectClass.equals(ClassLoad.getClass(AutomationResolver.resolve(ClassNames.TL_MESSAGES_SEND_MULTI_MEDIA)))) msgName = "TLRPC$TL_messages_sendMultiMedia";
+
+        return XposedHelpers.getObjectField(msg, AutomationResolver.resolve(msgName, "peer", AutomationResolver.ResolverType.Field));
     }
 
     public static Long getDialogId(TLRPC.InputPeer peer) {

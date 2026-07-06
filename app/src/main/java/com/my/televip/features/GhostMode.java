@@ -33,12 +33,8 @@ public class GhostMode {
                                         HideSeen.saveReadHistory(object);
                                     }
                                     if (ConfigManager.hideOnline.isEnable()) {
-                                        if (ClassLoad.getClass(ClassNames.TL_ACCOUNT_UPDATE_STATUS) != null) {
-
-                                            if (ClassLoad.getClass(ClassNames.TL_ACCOUNT_UPDATE_STATUS).isInstance(object)) {
-                                                XposedHelpers.setBooleanField(object, AutomationResolver.resolve("TL_account$updateStatus", "offline", AutomationResolver.ResolverType.Field), true);
-                                            }
-                                        }
+                                        if (isOnlineRequest(object))
+                                            XposedHelpers.setBooleanField(object, AutomationResolver.resolve("TL_account$updateStatus", "offline", AutomationResolver.ResolverType.Field), true);
                                     }
 
                                     if (ConfigManager.hideSeen.isEnable() && HideSeen.isReadMessageRequest(object)) {
@@ -69,6 +65,11 @@ public class GhostMode {
         } catch (Throwable t) {
             Logger.e(t);
         }
+    }
+
+    public static boolean isOnlineRequest(Object object) {
+        if (object.getClass().getName().contains("TL_account$updateStatus")) return true;
+        return object.getClass().getName().equals(AutomationResolver.resolve(ClassNames.TL_ACCOUNT_UPDATE_STATUS));
     }
 
 }

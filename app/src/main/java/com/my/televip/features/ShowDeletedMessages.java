@@ -62,10 +62,11 @@ public class ShowDeletedMessages {
                                     ArrayList<Object> newUpdates = new ArrayList<>();
 
                                     for (Object item : updates) {
-                                        if (!item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_CHANNEL_MESSAGES)) && !item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_MESSAGES)))
+                                        if ((!item.getClass().getName().contains("TL_updateDeleteChannelMessages") && !item.getClass().getName().contains("TL_updateDeleteMessages")) ||
+                                                (!item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_CHANNEL_MESSAGES)) && !item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_MESSAGES))))
                                             newUpdates.add(item);
 
-                                        if (item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_CHANNEL_MESSAGES))) {
+                                        if (item.getClass().getName().contains("TL_updateDeleteChannelMessages") || item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_CHANNEL_MESSAGES))) {
                                             TLRPC.TL_updateDeleteChannelMessages channelMessages = new TLRPC.TL_updateDeleteChannelMessages(item);
 
                                             LongSparseArray dialogMessage = messagesController.getDialogMessage();
@@ -82,8 +83,8 @@ public class ShowDeletedMessages {
 
                                             markMessagesDeletedForController(messagesController.getMessagesStorage(), -channelMessages.getChannelID(), channelMessages.getMessages());
                                         }
-                                        if (item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_MESSAGES))) {
 
+                                        if (item.getClass().getName().contains("TL_updateDeleteMessages") || item.getClass().equals(ClassLoad.getClass(ClassNames.TL_UPDATE_DELETE_MESSAGES))) {
                                             ArrayList<Integer> messages = new TLRPC.TL_updateDeleteMessages(item).getMessages();
                                             SparseArray<Object> dialogMessages = messagesController.getDialogMessagesByIds();
                                             for (int id : messages) {
@@ -193,29 +194,12 @@ public class ShowDeletedMessages {
             }));
 
             ShowDeletedMessages.init();
-            ShowDeletedMessages.initAutoDownload();
         } catch (Throwable e) {
             Logger.e(e);
         }
 
         if (ConfigManager.showDeletedMessages.isEnable() && !ChatMessageCell.isEnable)
             ChatMessageCell.init();
-
-    }
-
-    public static void initAutoDownload() {
-
-        if (ClassLoad.getClass(ClassNames.DOWNLOAD_CONTROLLER) == null)
-            return;
-
-        HMethod.hookMethod(ClassLoad.getClass(ClassNames.DOWNLOAD_CONTROLLER), AutomationResolver.resolve("DownloadController", "canDownloadMedia", AutomationResolver.ResolverType.Method), ClassLoad.getClass(ClassNames.TL_MESSAGE), new AbstractMethodHook() {
-            @Override
-            protected void beforeMethod(MethodHookParam param) {
-                TLRPC.Message message = new TLRPC.Message(param.args[0]);
-                if ((message.getFlags() & FLAG_DELETED) != 0)
-                    param.setResult(0);
-            }
-        });
 
     }
 

@@ -26,10 +26,11 @@ public class SecretMediaViewer {
 
                 if (ClassLoad.getClass(ClassNames.SECRET_MEDIA_VIEWER) == null) return;
 
-                HMethod.hookMethod(ClassLoad.getClass(ClassNames.SECRET_MEDIA_VIEWER), AutomationResolver.resolve("SecretMediaViewer", "openMedia", AutomationResolver.ResolverType.Method), AutomationResolver.merge(AutomationResolver.resolveObject("PhotoViewer$PhotoViewerProvider", new Class[]{ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ClassLoad.getClass(ClassNames.PHOTO_VIEWER_PROVIDER), java.lang.Runnable.class, java.lang.Runnable.class}), new AbstractMethodHook() {
+                HMethod.hookMethod(ClassLoad.getClass(ClassNames.SECRET_MEDIA_VIEWER), AutomationResolver.resolve("SecretMediaViewer", "openMedia", AutomationResolver.ResolverType.Method), AutomationResolver.merge(AutomationResolver.resolveObject("openMedia", new Class[]{ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ClassLoad.getClass(ClassNames.PHOTO_VIEWER_PROVIDER), java.lang.Runnable.class, java.lang.Runnable.class}), new AbstractMethodHook() {
                     @Override
                     protected void beforeMethod(MethodHookParam param) {
-                        if (ConfigManager.preventMedia.isEnable() && !ConfigManager.secretMediaSave.isEnable()) {
+                        boolean secretMediaSave = ConfigManager.secretMediaSave != null && ConfigManager.secretMediaSave.isEnable();
+                        if (ConfigManager.preventMedia.isEnable() && !secretMediaSave) {
                             param.args[2] = null;
                             param.args[3] = null;
 
@@ -42,7 +43,7 @@ public class SecretMediaViewer {
                             }
                         }
 
-                        if (ConfigManager.secretMediaSave.isEnable() && (param.args.length >= 2 || param.args[0] != null)) {
+                        if (secretMediaSave && (param.args.length >= 2 || param.args[0] != null)) {
                             MessageObject messageObject = new MessageObject(param.args[0]);
                             PhotoViewer.PhotoViewerProvider provider = new PhotoViewer.PhotoViewerProvider(param.args[1]);
                             final PhotoViewer.PlaceProviderObject object = provider.getPlaceForPhoto(messageObject, null, 0, true, false);

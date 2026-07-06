@@ -5,6 +5,7 @@ import com.my.televip.language.Translator;
 
 import java.time.chrono.HijrahDate;
 import java.time.temporal.ChronoField;
+import java.util.Calendar;
 
 import ir.huri.jcal.JalaliCalendar;
 
@@ -29,6 +30,27 @@ public class CalendarDate {
         day = jalaliCalendar.getDay();
         String[] persianMonths = { Translator.get(Keys.PersianMonthFarvardin), Translator.get(Keys.PersianMonthOrdibehesht), Translator.get(Keys.PersianMonthKhordad), Translator.get(Keys.PersianMonthTir), Translator.get(Keys.PersianMonthMordad), Translator.get(Keys.PersianMonthShahrivar), Translator.get(Keys.PersianMonthMehr), Translator.get(Keys.PersianMonthAban), Translator.get(Keys.PersianMonthAzar), Translator.get(Keys.PersianMonthDey), Translator.get(Keys.PersianMonthBahman), Translator.get(Keys.PersianMonthEsfand)};
         monthName = persianMonths[month - 1];
+    }
+    public CalendarDate(Calendar calendar) {
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_WEEK);
+        String[] gregorianMonths = {
+                Translator.get(Keys.GregorianMonthJanuary),
+                Translator.get(Keys.GregorianMonthFebruary),
+                Translator.get(Keys.GregorianMonthMarch),
+                Translator.get(Keys.GregorianMonthApril),
+                Translator.get(Keys.GregorianMonthMay),
+                Translator.get(Keys.GregorianMonthJune),
+                Translator.get(Keys.GregorianMonthJuly),
+                Translator.get(Keys.GregorianMonthAugust),
+                Translator.get(Keys.GregorianMonthSeptember),
+                Translator.get(Keys.GregorianMonthOctober),
+                Translator.get(Keys.GregorianMonthNovember),
+                Translator.get(Keys.GregorianMonthDecember)
+        };
+
+        monthName = gregorianMonths[month - 1];
     }
 
     public int getDay() {

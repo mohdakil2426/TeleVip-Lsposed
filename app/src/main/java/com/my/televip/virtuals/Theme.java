@@ -3,15 +3,9 @@ package com.my.televip.virtuals;
 import android.graphics.Color;
 import android.text.TextPaint;
 
-import com.my.televip.Class.ClassNames;
-import com.my.televip.utils.Utils;
 import com.my.televip.Class.ClassLoad;
+import com.my.televip.Class.ClassNames;
 import com.my.televip.obfuscate.AutomationResolver;
-import com.my.televip.logging.Logger;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.robv.android.xposed.XposedHelpers;
 
@@ -19,46 +13,7 @@ public class Theme {
 
     public static TextPaint getTextPaint()
     {
-        Class<?> theme = ClassLoad.getClass(ClassNames.THEME);
-        List<Field> fields = new ArrayList<>();
-        for (Field declaredField : theme.getDeclaredFields())
-            if (declaredField.getName().equals(AutomationResolver.resolve("Theme", "chat_timePaint", AutomationResolver.ResolverType.Field)))
-                fields.add(declaredField);
-
-        if (!fields.isEmpty()) {
-            try
-            {
-                Field textPaintField = null;
-                for (Field field : fields) {
-                    if (field.getType().equals(TextPaint.class))
-                    {
-                        textPaintField = field;
-                    }
-                }
-                if (textPaintField != null)
-                    return (TextPaint) textPaintField.get(null);
-                else {
-                    for (Field field : fields) {
-                        if (field.getType().getName().contains("TextPaint"))
-                        {
-                            textPaintField = field;
-                        }
-                    }
-                    if (textPaintField != null)
-                        return (TextPaint) textPaintField.get(null);
-                    else
-                        Logger.w("Not found chat_timePaint field in Theme, " + Utils.issue);
-                }
-            }
-            catch (IllegalAccessException e)
-            {
-                Logger.e(e);
-            }
-        }
-        else
-            Logger.w("Not found chat_timePaint field in Theme, " + Utils.issue);
-
-        return null;
+        return (TextPaint) XposedHelpers.getStaticObjectField(ClassLoad.getClass(ClassNames.THEME), AutomationResolver.resolve("Theme", "chat_timePaint", AutomationResolver.ResolverType.Field));
     }
 
     public static boolean isLight(){

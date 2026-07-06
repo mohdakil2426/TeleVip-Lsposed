@@ -18,6 +18,8 @@
         <item>ir.ilmili.telegraph</item>
         <item>ru.dahl.messenger</item>
         <item>nekox.messenger.broken</item>
+        <item>tw.nekomimi.nekogram</item>
+        <item>org.forkgram.classic</item>
       <!--  <item>momo.gram</item> -->
     </string-array>
 </resources>

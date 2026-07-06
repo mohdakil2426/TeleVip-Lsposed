@@ -1,5 +1,7 @@
 package com.my.televip.virtuals.tgnet;
 
+import com.my.televip.Class.ClassLoad;
+import com.my.televip.Class.ClassNames;
 import com.my.televip.obfuscate.AutomationResolver;
 
 import de.robv.android.xposed.XposedHelpers;
@@ -10,6 +12,9 @@ public class NativeByteBuffer {
 
     public NativeByteBuffer(Object obj){
         nativeByteBuffer = obj;
+    }
+    public NativeByteBuffer(boolean calculate){
+        nativeByteBuffer = XposedHelpers.newInstance(ClassLoad.getClass(ClassNames.NATIVE_BYTE_BUFFER), calculate);
     }
 
     public void reuse(){
@@ -27,5 +32,6 @@ public class NativeByteBuffer {
     public void writeInt32(int i) {
         XposedHelpers.callMethod(nativeByteBuffer, AutomationResolver.resolve("NativeByteBuffer","writeInt32", AutomationResolver.ResolverType.Method), i);
     }
+
 
 }

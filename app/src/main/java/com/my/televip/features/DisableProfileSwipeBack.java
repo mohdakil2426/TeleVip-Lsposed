@@ -18,9 +18,9 @@ public class DisableProfileSwipeBack {
             if (!isEnable) {
                 isEnable = true;
 
-                if (ClassLoad.getClass(ClassNames.CHAT_ACTIVITY) != null) {
+                if (ClassLoad.getClass(ClassNames.PROFILE_ACTIVITY) != null) {
 
-                    HMethod.hookMethod(ClassLoad.getClass(ClassNames.CHAT_ACTIVITY), AutomationResolver.resolve("ProfileActivity", "isSwipeBackEnabled", AutomationResolver.ResolverType.Method), AutomationResolver.merge(AutomationResolver.resolveObject("isSwipeBackEnabled", new Class[]{MotionEvent.class}), new AbstractMethodHook() {
+                    HMethod.hookMethod(ClassLoad.getClass(ClassNames.PROFILE_ACTIVITY), AutomationResolver.resolve("ProfileActivity", "isSwipeBackEnabled", AutomationResolver.ResolverType.Method), AutomationResolver.merge(AutomationResolver.resolveObject("isSwipeBackEnabled", new Class[]{MotionEvent.class}), new AbstractMethodHook() {
                         @Override
                         protected void beforeMethod(MethodHookParam param) {
                             if (ConfigManager.disableProfileSwipeBack.isEnable()) {
